@@ -1,0 +1,8 @@
+{
+    "workbench.localHistory.enabled": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    }
+}
