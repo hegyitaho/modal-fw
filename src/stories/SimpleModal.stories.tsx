@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { userEvent, within, expect } from '@storybook/test'
 import { ModalProvider } from '../Modal/ModalProvider'
 import { useModal } from '../Modal/ModalContext'
-import { testIds } from '../Modal/utils/testingIds'
+import { assertContent, closeModal, closeModalButtonText, openModal, openModalButtonText } from './utils'
 
 const meta = {
-  title: 'Modal',
+  title: 'Simple modal',
   component: ModalProvider,
   parameters: {
     layout: 'fullscreen',
@@ -14,9 +14,6 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-const openModalButtonText = 'open modal'
-const closeModalButtonText = 'close'
 
 export const Modal: Story = {
   render: SimpleModal,
@@ -43,7 +40,7 @@ export const ModalCanBeClosedWithEsc: Story = {
 
     await openModal(root)
     await userEvent.keyboard('[Enter]') // todo why [Escape] won't work
-    await expect(canvas.getByText(closeModalButtonText)).not.toBeVisible()
+    await expect(canvas.queryByText(closeModalButtonText)).not.toBeInTheDocument()
   },
 }
 
@@ -55,15 +52,27 @@ export const DefaultButtonFocused: Story = {
     const canvas = within(root)
 
     await openModal(root)
-    await expect(canvas.getByText(closeModalButtonText)).toHaveFocus()
+    await expect(canvas.getByRole('button', { name: 'close-modal' })).toHaveFocus()
+  },
+}
+
+export const ModalOverlay: Story = {
+  name: 'closable with "x" button',
+  render: SimpleModal,
+  play: async ({ canvasElement }) => {
+    const root = canvasElement.parentElement as HTMLElement
+    const canvas = within(root)
+
+    await openModal(root)
+    await userEvent.click(canvas.getByRole('button', { name: 'close-modal' }))
   },
 }
 
 function SimpleModal() {
   const Content = () => {
-    const { openModalWith } = useModal()
+    const { openNewModal } = useModal()
     return (
-      <button onClick={() => openModalWith({ body: <div>content</div>, title: 'SingleContentSingleModal' })}>
+      <button onClick={() => openNewModal({ children: <div>content</div>, title: 'SingleContentSingleModal', isModal: true })}>
         {openModalButtonText}
       </button>
     )
@@ -74,28 +83,4 @@ function SimpleModal() {
       <Content />
     </ModalProvider>
   )
-}
-
-async function assertContent(root: HTMLElement) {
-  const canvas = within(root)
-  await expect(
-    canvas.getByTestId(
-      testIds.modalTitle,
-    ),
-  ).toHaveTextContent('SingleContentSingleModal')
-  await expect(
-    canvas.getByTestId(
-      testIds.modalContent,
-    ),
-  ).toHaveTextContent('content')
-}
-
-async function openModal(root: HTMLElement) {
-  const canvas = within(root)
-  await userEvent.click(canvas.getByRole('button', { name: openModalButtonText }))
-}
-
-async function closeModal(root: HTMLElement) {
-  const canvas = within(root)
-  await userEvent.click(canvas.getByRole('button', { name: closeModalButtonText }))
 }

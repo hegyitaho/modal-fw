@@ -18,7 +18,8 @@
     "motion": "^12.4.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-jss": "^10.10.0"
+    "react-jss": "^10.10.0",
+    "use-immer": "^0.11.0"
   },
   "scripts": {
     "dev": "vite",
@@ -26,7 +27,9 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "init-msw": "msw init public/"
+    "init-msw": "msw init public/",
+    "install-cli-test-deps": "npx playwright install chromium --with-deps",
+    "test-storybook": "test-storybook"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -37,6 +40,7 @@
     "@storybook/react": "^8.5.6",
     "@storybook/react-vite": "^8.5.6",
     "@storybook/test": "^8.5.6",
+    "@storybook/test-runner": "^0.21.3",
     "@stylistic/eslint-plugin": "^4.0.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

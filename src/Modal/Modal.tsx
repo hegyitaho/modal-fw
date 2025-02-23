@@ -1,34 +1,49 @@
-import { PropsWithChildren, useLayoutEffect, useRef } from 'react'
+import { createElement, useLayoutEffect as useEffect, useRef } from 'react'
 import './modal.css'
+import { DefaultModal } from './modal-content-variants'
+import { ModalProps } from './modal.types'
+import classNames from 'classnames'
 import { testIds } from './utils/testingIds'
 
-interface ModalProps {
-  title: string
-  isOpen: boolean
-  onClose: () => void
-}
-
-export function Modal({ isOpen, onClose, children, title }: PropsWithChildren<ModalProps>) {
+export function Modal({
+  onClose,
+  children,
+  title,
+  onConfirmed,
+  buttons,
+  isModal,
+  isFullScreen,
+  contentComponentToRender,
+}: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
-  useLayoutEffect(() => {
-    if (!isOpen) {
-      dialogRef?.current?.close()
+  useEffect(() => {
+    const current = dialogRef?.current
+    if (current) {
+      if (isModal) {
+        current.showModal()
+      }
+      else {
+        current.show()
+      }
     }
-    else {
-      dialogRef.current?.showModal()
+    return () => {
+      if (current) {
+        current.close()
+      }
     }
-  }, [isOpen])
+  // shouldn't reopen even if modal type changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <dialog ref={dialogRef} className="modal-container" data-testid={testIds.modalContainer} onClose={onClose}>
-      <h2 data-testid={testIds.modalTitle}>{title}</h2>
-      <section data-testid={testIds.modalContent}>
-        {children}
-      </section>
-      <div className="modal-footer">
-        <button autoFocus onClick={onClose}>close</button>
-      </div>
+    <dialog
+      ref={dialogRef}
+      className={classNames('modal-fw', { 'modal-fw--full-screen': isFullScreen })}
+      data-testid={testIds.modalContainer}
+      onClose={onClose}
+    >
+      {createElement(contentComponentToRender ?? DefaultModal, { onClose, title, buttons, onConfirmed }, children)}
     </dialog>
   )
 }
