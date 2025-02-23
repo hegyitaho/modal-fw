@@ -1,0 +1,16 @@
+.modal-container[open] {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+    border: 2px solid rgb(240, 240, 240);
+    border-radius: 1rem;
+    min-width: 250px;
+    min-height: 250px;
+    padding: 1rem;
+}
+
+.modal-container::backdrop {
+    backdrop-filter: blur(2px);
+}
