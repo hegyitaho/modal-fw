@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ModalProvider } from '../Modal/ModalProvider'
-import { useModal } from '../Modal/ModalContext'
+import { ModalProvider, useModal } from '../'
 import { openModal, openModalButtonText } from './utils'
 import { useActionState, useEffect, useRef } from 'react'
 import { expect, fireEvent, userEvent, within } from '@storybook/test'
