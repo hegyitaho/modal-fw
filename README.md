@@ -1,85 +1,59 @@
 # doksi
 storybookban irtam mert lehet esetekent tesztet irni es jsdommal ellentetben latni is es mockolni se kell semmit.
+modalos fileok `./src`, storybook `./stories` mappaban
+
 ### futtatas
 - `npm run storybook` 
 -  http://localhost:6006/
 ## usage
+```tsx
+<ModalProvider>
+    <Page />
+</ModalProvider>
+```
+### exposed methods
+```ts
+const { openNewModal, close, moveToBack, moveToFront, setZIndex } = useModal()
+```
 ### openNewModal
 opens a new modal
 ```tsx
-const ({openNewModal}) = useModal()
-// ...
-<ModalProvider>
-    <button onClick={() => {
-        const modalId = openNewModal({ 
-            children: <p>modal content</p>,
-            title: 'modal title',
-        })
-    }}>
-        open modal
-    </button>
-</ModalProvider>
-
+const modalId = openNewModal({ 
+    children: <p>modal content</p>,
+    title: 'modal title',
+})
 ```
 ### close
 closes athe modal with the id
 ```tsx
-const ({close}) = useModal()
-// ...
-<ModalProvider>
-    <button onClick={() => { close(modalId) }}>
-        open modal
-    </button>
-</ModalProvider>
+close(modalId)
 ```
 ### moveToFront, moveToBack
 moves modal to front or back (z-index doesn't affect modal dialog)
 ```tsx
-const ({close}) = useModal()
-// ...
-<ModalProvider>
-    <button onClick={() => { close(modalId) }}>
-        open modal
-    </button>
-</ModalProvider>
+ moveToFront(modalId)
 ```
 ### setZIndex
 only works with non-blocking (non-modal) dialog
 ```tsx
-const ({setZIndex}) = useModal()
-// ...
-<ModalProvider>
-    <button onClick={() => { setZIndex(modalId, 1) }}>
-        open modal
-    </button>
-</ModalProvider>
+setZIndex(modalId, zIndex)
+```
+### custom buttons
+using default layout but custom buttons
+```tsx
+openNewModal({ 
+    buttons: ({ onClose }) => <MyCusomButton onClick={() => { onClose() }}>fancy close button</button>
+})
 ```
 ### layout
 display any component as content without the default layout / buttons etc.
 ```tsx
-const ({close}) = useModal()
-// ...
-<ModalProvider>
-    <button onClick={() => {
-        const modalId = openNewModal({ 
-             layout: ({ onClose }) => (
-              <MyCustomElement {...{
-                onClose,
-                ...customProps
-              }}
-              />
-            )
-        })
-    }>
-        open modal
-    </button>
-</ModalProvider>
+const modalId = openNewModal({ 
+    layout: ({ onClose }) => (
+        <MyCustomElement {...{onClose, ...customProps}}/>
+    )
+})
 ```
-
-
-
-
-
 
 # feladat
 Globális Modal Kezelő Rendszer
