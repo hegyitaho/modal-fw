@@ -46,10 +46,11 @@ export const ConfirmationModalCloses: Story = {
 
 async function assertCreatedProductDetailsAreShownInANewModal(root: HTMLElement, newProduct: Product) {
   const canvas = within(root)
+
+  const priceAnyWayFormatted = canvas.getByLabelText<HTMLInputElement>('price', { exact: false }).value
+  await expect(['$12,345.00', '12345']).toContain(priceAnyWayFormatted) // TODO make Intl.NumberFormat/locale consistent in ci
   await expect(canvas.getByLabelText('name', { exact: false })).toHaveValue(newProduct.name)
-  // TODO make Intl.NumberFormat/locale consistent in ci
-  // await expect(canvas.getByLabelText('price', { exact: false })).toHaveValue(newProduct.price)
-  await expect(canvas.getByLabelText('price', { exact: false })).toHaveValue(12345)
+
   await userEvent.click(canvas.getByLabelText('close-modal'))
 }
 
