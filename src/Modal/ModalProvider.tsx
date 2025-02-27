@@ -1,9 +1,9 @@
-import { PropsWithChildren, useCallback, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { PropsWithChildren, useCallback, useEffect, useId, useState } from 'react'
 import { ModalContext, ModalContextTypes } from './ModalContext'
 import { Modal } from './Modal'
 import { useCreatePortal } from './utils/useCreatePortal'
 import { ModalProps, NewModal } from './modal.types'
+import { createPortal } from 'react-dom'
 
 type ModalState = NewModal & {
   id: string

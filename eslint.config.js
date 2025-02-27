@@ -8,7 +8,11 @@ import stylistic from '@stylistic/eslint-plugin'
 export default tseslint.config(
   { ignores: ["dist"] },
   {
-    extends: [js.configs.recommended,  stylistic.configs.recommended, ...tseslint.configs.recommendedTypeChecked],
+    extends: [
+      js.configs.recommended,  
+      stylistic.configs.recommended, 
+      ...tseslint.configs.recommendedTypeChecked
+    ],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parserOptions: {
@@ -27,6 +31,8 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      ...reactRefresh.configs.recommended.rules,
+      ...reactRefresh.configs.vite.rules,
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },

@@ -238,14 +238,14 @@ function CustomButtonsModal() {
           const firstModalId = openNewModal(
             { children: <p>{firstModalContent}</p>,
               title: 'first modal',
-              buttons: <button onClick={() => moveToBack(firstModalId)}>{moveFirstModalToBack}</button>,
+              buttons: () => <button onClick={() => moveToBack(firstModalId)}>{moveFirstModalToBack}</button>,
               isModal: true,
             },
           )
           openNewModal(
             { children: <p>{secondModalContent}</p>,
               title: 'second modal',
-              buttons: <button onClick={() => moveToFront(firstModalId)}>{moveFirstModalToFront}</button>,
+              buttons: () => <button onClick={() => moveToFront(firstModalId)}>{moveFirstModalToFront}</button>,
               isModal: true,
             },
           )

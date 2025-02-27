@@ -4,6 +4,7 @@ import { DefaultModal } from './modal-content-variants'
 import { ModalProps } from './modal.types'
 import classNames from 'classnames'
 import { testIds } from './utils/testingIds'
+import { DefaultFooterButtons } from './modal-content-variants/DefaultFooterButtons'
 
 export function Modal({
   onClose,
@@ -35,7 +36,7 @@ export function Modal({
   // shouldn't reopen even if modal type changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  const buttonProps = { onClose, onConfirmed }
   return (
     <dialog
       ref={dialogRef}
@@ -43,7 +44,14 @@ export function Modal({
       data-testid={testIds.modalContainer}
       onClose={onClose}
     >
-      {createElement(contentComponentToRender ?? DefaultModal, { onClose, title, buttons, onConfirmed }, children)}
+      {
+        createElement(contentComponentToRender ?? DefaultModal, {
+          onClose,
+          title,
+          buttons: createElement((buttons ?? DefaultFooterButtons), buttonProps),
+          onConfirmed },
+        children)
+      }
     </dialog>
   )
 }

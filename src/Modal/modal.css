@@ -1,6 +1,7 @@
 :root {
     --regular-max-size: calc(100% - 100px);
     --full-screen-max-size: calc(100% - 3rem);
+    --min-size: 300px;
   }
 
 .modal-fw[open] {
@@ -15,8 +16,8 @@
     box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
     border: 2px solid rgb(240, 240, 240);
     border-radius: 1rem;
-    min-width: 250px;
-    min-height: 250px;
+    min-width: var(--min-size);
+    min-height: var(--min-size);
     padding: 1rem;
     
 }
@@ -37,6 +38,8 @@
     margin: 1rem;
     max-height: calc(100vh - 200px);
     overflow: auto;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 .modal-fw__close-button {

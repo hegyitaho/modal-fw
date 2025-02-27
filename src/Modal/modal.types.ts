@@ -1,13 +1,12 @@
-import type { JSXElementConstructor, PropsWithChildren, ReactElement } from 'react'
-
-export type NewModalContent = PropsWithChildren<{ title: string }>
+import type { JSX, JSXElementConstructor, PropsWithChildren } from 'react'
 
 export type ModalOptions = Partial<{
+  title: string
   isFullScreen: boolean
   /** if provided primary button appears */
   onConfirmed: (modalId: string) => void
   /** override default buttons in the footer */
-  buttons: ReactElement
+  buttons: JSXElementConstructor<Pick<OpenedModalProps, 'onClose' | 'onConfirmed'>>
   id: string
   isModal: boolean
   onClose: () => void
@@ -15,11 +14,10 @@ export type ModalOptions = Partial<{
   contentComponentToRender: JSXElementConstructor<OpenedModalProps>
 }>
 
-export type NewModal = ModalOptions & NewModalContent
+export type NewModal = PropsWithChildren<ModalOptions>
 
 export type ModalProps = Omit<NewModal, 'onConfirmed'> & {
-  onClose: () => void
   onConfirmed?: () => void
 }
 
-export type OpenedModalProps = Omit<ModalProps, 'isOpen' | 'isFullScreen' | 'isModal' | 'contentComponentToRender'>
+export type OpenedModalProps = Omit<ModalProps, 'isOpen' | 'isFullScreen' | 'isModal' | 'contentComponentToRender' | 'buttons'> & { buttons: JSX.Element }

@@ -1,23 +1,21 @@
 {
-  "name": "intro-storybook-react-template",
-  "version": "0.2.0",
-  "description": "Starter template to get up and running quickly with React and Storybook",
-  "author": "Chromatic <https://chromatic.com/>",
+  "name": "modal-fw",
+  "version": "0.1.0",
+  "description": "configurable modal component",
+  "author": "hegyitaho@gmail.com",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chromaui/intro-storybook-react-template"
+    "url": "https://github.com/hegyitaho/modal-fw"
   },
   "bugs": {
-    "url": "https://github.com/chromaui/intro-storybook-react-template/issues"
+    "url": "https://github.com/hegyitaho/modal-fw/issues"
   },
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "classnames": "^2.5.1",
     "motion": "^12.4.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-jss": "^10.10.0",
     "use-immer": "^0.11.0"
   },
@@ -38,19 +36,18 @@
     "@storybook/addon-interactions": "^8.5.6",
     "@storybook/addon-links": "^8.5.6",
     "@storybook/blocks": "^8.5.6",
-    "@storybook/react": "^8.5.6",
-    "@storybook/react-vite": "^8.5.6",
-    "@storybook/test": "^8.5.6",
+    "@storybook/react-vite": "^8.6.0",
+    "@storybook/test": "^8.6.0",
     "@storybook/test-runner": "^0.21.3",
     "@stylistic/eslint-plugin": "^4.0.1",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.1",
     "concurrently": "^9.1.2",
     "eslint": "^9.9.0",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
     "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.9.0",
     "http-server": "^14.1.1",
@@ -61,9 +58,6 @@
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
     "wait-on": "^8.0.2"
-  },
-  "resolutions": {
-    "jackspeak": "2.1.1"
   },
   "eslintConfig": {
     "extends": [
