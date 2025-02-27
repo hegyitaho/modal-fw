@@ -1,51 +1,16 @@
-import { jsx as p, jsxs as O, Fragment as R } from "react/jsx-runtime";
-import w, { createContext as x, useContext as j, useRef as N, useLayoutEffect as I, createElement as T, useEffect as P, useState as H, useCallback as v } from "react";
-const C = x(null), Z = () => j(C), E = {
-  modalTitle: "modal-fw__title",
-  modalContent: "modal-content",
-  modalContainer: "modal-fw"
-};
-function A({ onClose: i }) {
-  return /* @__PURE__ */ p("button", { "aria-label": "close-modal", onClick: i, className: "modal-fw__close-button", children: "✕" });
+import { jsxs as O, Fragment as R, jsx as p } from "react/jsx-runtime";
+import w, { createContext as k, useContext as I, useRef as N, useLayoutEffect as j, createElement as T, useEffect as P, useState as H, useCallback as v } from "react";
+const C = k(null), Q = () => I(C);
+function U(a) {
+  return a && a.__esModule && Object.prototype.hasOwnProperty.call(a, "default") ? a.default : a;
 }
-function U({ onClose: i, title: u, buttons: l, children: s }) {
-  return /* @__PURE__ */ O(R, { children: [
-    u && /* @__PURE__ */ p("h2", { className: "modal-fw__title", "data-testid": E.modalTitle, children: u }),
-    /* @__PURE__ */ p(A, { onClose: i }),
-    /* @__PURE__ */ p("section", { className: "modal-fw__content", "data-testid": E.modalContent, children: s }),
-    /* @__PURE__ */ p("div", { className: "modal-fw__footer", children: l })
-  ] });
-}
-function F({ onClose: i, onConfirmed: u }) {
-  return /* @__PURE__ */ O(R, { children: [
-    /* @__PURE__ */ p("button", { autoFocus: !0, onClick: i, children: "close" }),
-    !!u && /* @__PURE__ */ p(
-      "button",
-      {
-        className: "is-primary",
-        onClick: u,
-        children: "confirm"
-      }
-    )
-  ] });
-}
-function ee({ src: i, altText: u }) {
-  return ({ onClose: l, title: s }) => /* @__PURE__ */ O(R, { children: [
-    /* @__PURE__ */ p("h2", { children: s }),
-    /* @__PURE__ */ p(A, { onClose: l }),
-    /* @__PURE__ */ p("object", { "aria-label": u, data: i.split(".")[0], children: /* @__PURE__ */ p("img", { src: "/image-not-found.png?url", alt: "image not found" }) })
-  ] });
-}
-function V(i) {
-  return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
-}
-var L = { exports: {} };
+var A = { exports: {} };
 /*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
 	http://jedwatson.github.io/classnames
 */
-(function(i) {
+(function(a) {
   (function() {
     var u = {}.hasOwnProperty;
     function l() {
@@ -72,42 +37,79 @@ var L = { exports: {} };
     function f(c, d) {
       return d ? c ? c + " " + d : c + d : c;
     }
-    i.exports ? (l.default = l, i.exports = l) : window.classNames = l;
+    a.exports ? (l.default = l, a.exports = l) : window.classNames = l;
   })();
-})(L);
-var B = L.exports;
-const G = /* @__PURE__ */ V(B);
+})(A);
+var F = A.exports;
+const V = /* @__PURE__ */ U(F), E = {
+  modalTitle: "modal-fw__title",
+  modalContent: "modal-fw-content",
+  modalContainer: "modal-fw"
+};
+function B({ onClose: a, onConfirmed: u }) {
+  return /* @__PURE__ */ O(R, { children: [
+    /* @__PURE__ */ p("button", { autoFocus: !0, onClick: a, children: "close" }),
+    !!u && /* @__PURE__ */ p(
+      "button",
+      {
+        className: "is-primary",
+        onClick: u,
+        children: "confirm"
+      }
+    )
+  ] });
+}
+function L({ onClose: a }) {
+  return /* @__PURE__ */ p("button", { "aria-label": "close-modal", onClick: a, className: "modal-fw__close-button", children: "✕" });
+}
+function G({ onClose: a, title: u, buttons: l, children: s }) {
+  return /* @__PURE__ */ O(R, { children: [
+    u && /* @__PURE__ */ p("h2", { className: "modal-fw__title", "data-testid": E.modalTitle, children: u }),
+    /* @__PURE__ */ p(L, { onClose: a }),
+    /* @__PURE__ */ p("section", { className: "modal-fw__content", "data-testid": E.modalContent, children: s }),
+    /* @__PURE__ */ p("div", { className: "modal-fw__footer", children: l })
+  ] });
+}
+function ee({ src: a, altText: u, onClose: l, title: s }) {
+  return /* @__PURE__ */ O(R, { children: [
+    /* @__PURE__ */ p("h2", { children: s }),
+    /* @__PURE__ */ p(L, { onClose: l }),
+    /* @__PURE__ */ p("object", { "aria-label": u, data: a, children: /* @__PURE__ */ p("img", { src: "/image-not-found.png?url", alt: "image not found" }) })
+  ] });
+}
 function q({
-  onClose: i,
+  onClose: a,
   children: u,
   title: l,
   onConfirmed: s,
   buttons: f,
   isBlocking: c,
   isFullScreen: d,
-  contentComponentToRender: g
+  getLayout: g,
+  zIndex: n
 }) {
-  const n = N(null);
-  I(() => {
-    const a = n == null ? void 0 : n.current;
-    return a && (c ? a.showModal() : a.show()), () => {
-      a && a.close();
+  const t = N(null);
+  j(() => {
+    const r = t == null ? void 0 : t.current;
+    return r && (c ? r.showModal() : r.show()), () => {
+      r && r.close();
     };
   }, []);
-  const t = { onClose: i, onConfirmed: s };
+  const i = { onClose: a, onConfirmed: s };
   return /* @__PURE__ */ p(
     "dialog",
     {
-      ref: n,
-      className: G("modal-fw", { "modal-fw--full-screen": d }),
+      ref: t,
+      className: V("modal-fw", { "modal-fw--full-screen": d }),
       "data-testid": E.modalContainer,
-      onClose: i,
-      children: T(
-        g ?? U,
+      onClose: a,
+      style: { zIndex: n },
+      children: (g == null ? void 0 : g({ onClose: a })) ?? T(
+        G,
         {
-          onClose: i,
+          onClose: a,
           title: l,
-          buttons: T(f ?? F, t),
+          buttons: T(f ?? B, i),
           onConfirmed: s
         },
         u
@@ -115,17 +117,17 @@ function q({
     }
   );
 }
-function K() {
-  const i = N(null);
+function z() {
+  const a = N(null);
   return P(
     () => {
       const u = document.createElement("div");
-      return document.body.appendChild(u), i.current = u, () => {
-        i.current && document.body.removeChild(i.current);
+      return document.body.appendChild(u), a.current = u, () => {
+        a.current && document.body.removeChild(a.current);
       };
     },
     []
-  ), { portalRoot: i };
+  ), { portalRoot: a };
 }
 var b = { exports: {} }, y = {};
 /**
@@ -138,16 +140,16 @@ var b = { exports: {} }, y = {};
  * LICENSE file in the root directory of this source tree.
  */
 var D;
-function Y() {
+function K() {
   if (D) return y;
   D = 1;
-  var i = w;
+  var a = w;
   function u(n) {
     var t = "https://react.dev/errors/" + n;
     if (1 < arguments.length) {
       t += "?args[]=" + encodeURIComponent(arguments[1]);
-      for (var a = 2; a < arguments.length; a++)
-        t += "&args[]=" + encodeURIComponent(arguments[a]);
+      for (var i = 2; i < arguments.length; i++)
+        t += "&args[]=" + encodeURIComponent(arguments[i]);
     }
     return "Minified React error #" + n + "; visit " + t + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
   }
@@ -170,33 +172,33 @@ function Y() {
     p: 0,
     findDOMNode: null
   }, f = Symbol.for("react.portal");
-  function c(n, t, a) {
+  function c(n, t, i) {
     var r = 3 < arguments.length && arguments[3] !== void 0 ? arguments[3] : null;
     return {
       $$typeof: f,
       key: r == null ? null : "" + r,
       children: n,
       containerInfo: t,
-      implementation: a
+      implementation: i
     };
   }
-  var d = i.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+  var d = a.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
   function g(n, t) {
     if (n === "font") return "";
     if (typeof t == "string")
       return t === "use-credentials" ? t : "";
   }
   return y.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = s, y.createPortal = function(n, t) {
-    var a = 2 < arguments.length && arguments[2] !== void 0 ? arguments[2] : null;
+    var i = 2 < arguments.length && arguments[2] !== void 0 ? arguments[2] : null;
     if (!t || t.nodeType !== 1 && t.nodeType !== 9 && t.nodeType !== 11)
       throw Error(u(299));
-    return c(n, t, null, a);
+    return c(n, t, null, i);
   }, y.flushSync = function(n) {
-    var t = d.T, a = s.p;
+    var t = d.T, i = s.p;
     try {
       if (d.T = null, s.p = 2, n) return n();
     } finally {
-      d.T = t, s.p = a, s.d.f();
+      d.T = t, s.p = i, s.d.f();
     }
   }, y.preconnect = function(n, t) {
     typeof n == "string" && (t ? (t = t.crossOrigin, t = typeof t == "string" ? t === "use-credentials" ? t : "" : void 0) : t = null, s.d.C(n, t));
@@ -204,8 +206,8 @@ function Y() {
     typeof n == "string" && s.d.D(n);
   }, y.preinit = function(n, t) {
     if (typeof n == "string" && t && typeof t.as == "string") {
-      var a = t.as, r = g(a, t.crossOrigin), e = typeof t.integrity == "string" ? t.integrity : void 0, o = typeof t.fetchPriority == "string" ? t.fetchPriority : void 0;
-      a === "style" ? s.d.S(
+      var i = t.as, r = g(i, t.crossOrigin), e = typeof t.integrity == "string" ? t.integrity : void 0, o = typeof t.fetchPriority == "string" ? t.fetchPriority : void 0;
+      i === "style" ? s.d.S(
         n,
         typeof t.precedence == "string" ? t.precedence : void 0,
         {
@@ -213,7 +215,7 @@ function Y() {
           integrity: e,
           fetchPriority: o
         }
-      ) : a === "script" && s.d.X(n, {
+      ) : i === "script" && s.d.X(n, {
         crossOrigin: r,
         integrity: e,
         fetchPriority: o,
@@ -224,12 +226,12 @@ function Y() {
     if (typeof n == "string")
       if (typeof t == "object" && t !== null) {
         if (t.as == null || t.as === "script") {
-          var a = g(
+          var i = g(
             t.as,
             t.crossOrigin
           );
           s.d.M(n, {
-            crossOrigin: a,
+            crossOrigin: i,
             integrity: typeof t.integrity == "string" ? t.integrity : void 0,
             nonce: typeof t.nonce == "string" ? t.nonce : void 0
           });
@@ -237,8 +239,8 @@ function Y() {
       } else t == null && s.d.M(n);
   }, y.preload = function(n, t) {
     if (typeof n == "string" && typeof t == "object" && t !== null && typeof t.as == "string") {
-      var a = t.as, r = g(a, t.crossOrigin);
-      s.d.L(n, a, {
+      var i = t.as, r = g(i, t.crossOrigin);
+      s.d.L(n, i, {
         crossOrigin: r,
         integrity: typeof t.integrity == "string" ? t.integrity : void 0,
         nonce: typeof t.nonce == "string" ? t.nonce : void 0,
@@ -253,10 +255,10 @@ function Y() {
   }, y.preloadModule = function(n, t) {
     if (typeof n == "string")
       if (t) {
-        var a = g(t.as, t.crossOrigin);
+        var i = g(t.as, t.crossOrigin);
         s.d.m(n, {
           as: typeof t.as == "string" && t.as !== "script" ? t.as : void 0,
-          crossOrigin: a,
+          crossOrigin: i,
           integrity: typeof t.integrity == "string" ? t.integrity : void 0
         });
       } else s.d.m(n);
@@ -264,8 +266,8 @@ function Y() {
     s.d.r(n);
   }, y.unstable_batchedUpdates = function(n, t) {
     return n(t);
-  }, y.useFormState = function(n, t, a) {
-    return d.H.useFormState(n, t, a);
+  }, y.useFormState = function(n, t, i) {
+    return d.H.useFormState(n, t, i);
   }, y.useFormStatus = function() {
     return d.H.useHostTransitionStatus();
   }, y.version = "19.0.0", y;
@@ -281,9 +283,9 @@ var m = {};
  * LICENSE file in the root directory of this source tree.
  */
 var M;
-function z() {
+function Y() {
   return M || (M = 1, process.env.NODE_ENV !== "production" && function() {
-    function i() {
+    function a() {
     }
     function u(r) {
       return "" + r;
@@ -319,7 +321,7 @@ function z() {
       return r === null ? "`null`" : r === void 0 ? "`undefined`" : r === "" ? "an empty string" : typeof r == "string" ? JSON.stringify(r) : typeof r == "number" ? "`" + r + "`" : 'something with type "' + typeof r + '"';
     }
     function d() {
-      var r = a.H;
+      var r = i.H;
       return r === null && console.error(
         `Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
 1. You might have mismatching versions of React and the renderer (such as React DOM)
@@ -331,23 +333,23 @@ See https://react.dev/link/invalid-hook-call for tips about how to debug and fix
     typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ < "u" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart == "function" && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
     var g = w, n = {
       d: {
-        f: i,
+        f: a,
         r: function() {
           throw Error(
             "Invalid form element. requestFormReset must be passed a form that was rendered by React."
           );
         },
-        D: i,
-        C: i,
-        L: i,
-        m: i,
-        X: i,
-        S: i,
-        M: i
+        D: a,
+        C: a,
+        L: a,
+        m: a,
+        X: a,
+        S: a,
+        M: a
       },
       p: 0,
       findDOMNode: null
-    }, t = Symbol.for("react.portal"), a = g.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+    }, t = Symbol.for("react.portal"), i = g.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     typeof Map == "function" && Map.prototype != null && typeof Map.prototype.forEach == "function" && typeof Set == "function" && Set.prototype != null && typeof Set.prototype.clear == "function" && typeof Set.prototype.forEach == "function" || console.error(
       "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
     ), m.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = n, m.createPortal = function(r, e) {
@@ -356,12 +358,12 @@ See https://react.dev/link/invalid-hook-call for tips about how to debug and fix
         throw Error("Target container is not a DOM element.");
       return l(r, e, null, o);
     }, m.flushSync = function(r) {
-      var e = a.T, o = n.p;
+      var e = i.T, o = n.p;
       try {
-        if (a.T = null, n.p = 2, r)
+        if (i.T = null, n.p = 2, r)
           return r();
       } finally {
-        a.T = e, n.p = o, n.d.f() && console.error(
+        i.T = e, n.p = o, n.d.f() && console.error(
           "flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task."
         );
       }
@@ -493,76 +495,83 @@ See https://react.dev/link/invalid-hook-call for tips about how to debug and fix
     }, m.version = "19.0.0", typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ < "u" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop == "function" && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
   }()), m;
 }
-function k() {
+function x() {
   if (!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function")) {
     if (process.env.NODE_ENV !== "production")
       throw new Error("^_^");
     try {
-      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(k);
-    } catch (i) {
-      console.error(i);
+      __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(x);
+    } catch (a) {
+      console.error(a);
     }
   }
 }
-process.env.NODE_ENV === "production" ? (k(), b.exports = Y()) : b.exports = z();
+process.env.NODE_ENV === "production" ? (x(), b.exports = K()) : b.exports = Y();
 var $ = b.exports;
-function te(i) {
-  const { portalRoot: u } = K(), [
+function te(a) {
+  const { portalRoot: u } = z(), [
     l,
     s
-  ] = H([]), f = v((n) => {
-    const t = n.id || self.crypto.randomUUID();
+  ] = H([]), f = v((t) => {
+    const i = t.id || self.crypto.randomUUID();
     return s(
-      (a) => [...a, { ...n, id: t }]
-    ), t;
-  }, []), c = v((n) => {
-    s((t) => t.filter(({ id: a }) => a !== n));
-  }, []), d = v((n) => {
-    s((t) => {
-      const a = t.find(({ id: r }) => r === n);
-      return a ? [a, ...t.filter(({ id: r }) => r !== n)] : t;
+      (r) => [...r, { ...t, id: i, zIndex: 0 }]
+    ), i;
+  }, []), c = v((t) => {
+    s((i) => i.filter(({ id: r }) => r !== t));
+  }, []), d = v((t) => {
+    s((i) => {
+      const r = i.find(({ id: e }) => e === t);
+      return r ? [r, ...i.filter(({ id: e }) => e !== t)] : i;
     });
-  }, []), g = v((n) => {
-    s((t) => {
-      const a = t.find(({ id: r }) => r === n);
-      return a ? [...t.filter(({ id: r }) => r !== n), a] : t;
+  }, []), g = v((t) => {
+    s((i) => {
+      const r = i.find(({ id: e }) => e === t);
+      return r ? [...i.filter(({ id: e }) => e !== t), r] : i;
+    });
+  }, []), n = v((t, i) => {
+    s((r) => {
+      const e = r.find(({ id: o }) => o === t);
+      return e ? [
+        ...r.filter(({ id: o }) => o !== t),
+        { ...e, zIndex: i }
+      ] : r;
     });
   }, []);
-  return /* @__PURE__ */ O(C.Provider, { value: { openNewModal: f, close: c, moveToBack: d, moveToFront: g }, children: [
-    i.children,
+  return /* @__PURE__ */ O(C.Provider, { value: { openNewModal: f, close: c, moveToBack: d, moveToFront: g, setZIndex: n }, children: [
+    a.children,
     u.current && $.createPortal(
-      l.filter((n, t) => W(n, l, t)).map((n) => /* @__PURE__ */ T(
+      l.filter((t, i) => W(t, l, i)).map((t) => T(
         q,
         {
-          ...n,
+          ...t,
           onClose: () => {
-            var t;
-            (t = n.onClose) == null || t.call(n), c(n.id);
+            var i;
+            (i = t.onClose) == null || i.call(t), c(t.id);
           },
-          ...n.onConfirmed && {
+          ...t.onConfirmed && {
             onConfirmed: () => {
-              var t;
-              (t = n.onConfirmed) == null || t.call(n, n.id);
+              var i;
+              (i = t.onConfirmed) == null || i.call(t, t.id);
             }
           },
-          key: n.id
+          // not sure why TS won't understand this syntax
+          key: t.id
         },
-        n.children
+        t.children
       )),
       u.current
     )
   ] });
 }
-function W(i, u, l) {
-  return !i.isBlocking || X(u, l);
+function W(a, u, l) {
+  return !a.isBlocking || X(u, l);
 }
-function X(i, u) {
-  return i.length - 1 === u;
+function X(a, u) {
+  return a.length - 1 === u;
 }
 export {
-  F as DefaultFooterButtons,
-  U as DefaultModal,
-  ee as ImageModal,
+  ee as ImageModalLayout,
   te as ModalProvider,
-  Z as useModal
+  Q as useModal
 };

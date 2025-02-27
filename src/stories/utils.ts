@@ -35,3 +35,19 @@ export async function assertContent(root: HTMLElement) {
     ),
   ).toHaveTextContent('content')
 }
+
+/** @param visibility should have keys for `data-testid` ids */
+export function visibilityObserverByTestId(visibility: Record<string, boolean>) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      // @ts-expect-error IntersectionObserver v2 types missing https://w3c.github.io/IntersectionObserver/v2/#calculate-visibility-algo
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      visibility[entry.target.getAttribute('data-testid') as unknown as never] = entry.isVisible
+    })
+  }, {
+    // @ts-expect-error IntersectionObserver v2 types missing https://w3c.github.io/IntersectionObserver/v2/#calculate-visibility-algo
+    trackVisibility: true,
+    delay: 100,
+  })
+  return observer
+}

@@ -1,13 +1,13 @@
 import { OpenedModalProps } from '../modal.types'
-import { CloseButton } from './CloseButton'
+import { CloseButton } from '../components'
 
-type ImageModalProps = {
+type ImageModalLayoutProps = {
   src: string
   altText: string
   title: string
 } & Pick<OpenedModalProps, 'onClose'>
 
-export function ImageModal({ src, altText, onClose, title }: ImageModalProps) {
+export function ImageModalLayout({ src, altText, onClose, title }: ImageModalLayoutProps) {
   return (
     <>
       <h2>{title}</h2>

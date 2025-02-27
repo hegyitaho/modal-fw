@@ -1,5 +1,5 @@
 export const testIds = {
   modalTitle: 'modal-fw__title',
-  modalContent: 'modal-content',
+  modalContent: 'modal-fw-content',
   modalContainer: 'modal-fw',
 }

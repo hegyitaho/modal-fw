@@ -1,8 +1,8 @@
 import { OpenedModalProps } from '../modal.types'
 import { testIds } from '../utils/testingIds'
-import { CloseButton } from './CloseButton'
+import { CloseButton } from '../components'
 
-export function DefaultModal({ onClose, title, buttons, children }: OpenedModalProps) {
+export function DefaultModalLayout({ onClose, title, buttons, children }: OpenedModalProps) {
   return (
     <>
       {title && <h2 className="modal-fw__title" data-testid={testIds.modalTitle}>{title}</h2>}

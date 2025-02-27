@@ -12,5 +12,6 @@ type Story = StoryObj<typeof meta>;
 export declare const Modal: Story;
 export declare const ConfirmationModalCloses: Story;
 export declare const CustomButtonOpensMultipleModals: Story;
+export declare const setZIndexForNonBlockingModal: Story;
 export declare const FullScreenModalStory: Story;
 export declare const CustomContentComponentModal: Story;

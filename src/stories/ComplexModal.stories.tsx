@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { ModalProvider, useModal } from '../'
-import { closeModal, confirmModal, openModal, openModalButtonText } from './utils'
-import { useState } from 'react'
+import { closeModal, confirmModal, openModal, openModalButtonText, visibilityObserverByTestId } from './utils'
+import { useRef, useState } from 'react'
 import { expect, userEvent, waitFor, within } from '@storybook/test'
 import { testIds } from '../Modal/utils/testingIds'
-import { ImageModal } from '../Modal/modal-content-variants'
+import { ImageModalLayout } from '../Modal/layout'
 
 const meta = {
   title: 'Complex modal',
@@ -39,8 +39,8 @@ export const ConfirmationModalCloses: Story = {
 }
 
 export const CustomButtonOpensMultipleModals: Story = {
-  name: 'confirmation modal opens multiple modals then changes display order',
-  render: CustomButtonsModal,
+  name: 'change display order for blocking (modal) dialogs',
+  render: BlockingModals,
   play: async ({ canvasElement }) => {
     const root = canvasElement.parentElement as HTMLElement
     const canvas = within(root)
@@ -55,6 +55,37 @@ export const CustomButtonOpensMultipleModals: Story = {
   },
 }
 
+export const setZIndexForNonBlockingModal: Story = {
+  name: 'change display order for non-blocking dialogs with z index',
+  render: NonBlockingModals,
+  play: async ({ canvasElement }) => {
+    const root = canvasElement.parentElement as HTMLElement
+    const canvas = within(root)
+    await openModal(root)
+    await expect(canvas.getByText(secondModalContent)).toBeVisible()
+    const secondModal = canvas.getByText(secondModalContent)
+    secondModal.setAttribute('data-testid', 'secondModal')
+
+    const visibility = { firstModal: false, secondModal: false }
+    const observer = visibilityObserverByTestId(visibility)
+
+    observer.observe(secondModal)
+    await waitFor(() => expect(visibility).toStrictEqual({ firstModal: false, secondModal: true }))
+
+    await userEvent.click(canvas.getByRole('button', { name: moveFirstModalToFront }))
+    const firstModal = canvas.getByText(firstModalContent)
+    firstModal.setAttribute('data-testid', 'firstModal')
+    observer.observe(firstModal)
+
+    await waitFor(() => expect(visibility).toStrictEqual({ firstModal: true, secondModal: false }))
+
+    await userEvent.click(canvas.getByRole('button', { name: moveFirstModalToBack }))
+    await waitFor(() => expect(visibility).toStrictEqual({ firstModal: false, secondModal: true }))
+
+    observer.disconnect()
+  },
+}
+
 const backgroundContentId = 'background-content'
 
 export const FullScreenModalStory: Story = {
@@ -62,25 +93,11 @@ export const FullScreenModalStory: Story = {
   render: FullScreenModal,
   play: async ({ canvasElement }) => {
     const root = canvasElement.parentElement as HTMLElement
-    const visibility = { isModalVisible: false, isBackgroundVisible: false }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        // @ts-expect-error IntersectionObserver v2 types missing https://w3c.github.io/IntersectionObserver/v2/#calculate-visibility-algo
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const isVisible: boolean = entry.isVisible
-        if (entry.target.getAttribute('data-testid') === backgroundContentId) {
-          visibility.isBackgroundVisible = isVisible
-        }
-        else {
-          visibility.isModalVisible = isVisible
-        }
-      })
-    }, {
-      // @ts-expect-error IntersectionObserver v2 types missing https://w3c.github.io/IntersectionObserver/v2/#calculate-visibility-algo
-      trackVisibility: true,
-      delay: 100,
-    })
+    const visibility = { [backgroundContentId]: false, [testIds.modalContainer]: false }
+
+    const observer = visibilityObserverByTestId(visibility)
     const backgroundContent = window.document.querySelector(`[data-testid=${backgroundContentId}]`)
+
     if (backgroundContent) {
       observer.observe(backgroundContent)
     }
@@ -94,6 +111,8 @@ export const FullScreenModalStory: Story = {
     await closeModal(root)
 
     await assertOnlyBackgroundIsVisible(visibility)
+
+    observer.disconnect()
   },
 }
 
@@ -116,12 +135,12 @@ async function openObservedModal(root: HTMLElement, observer: IntersectionObserv
   }
 }
 
-function assertOnlyModalIsVisible(visibility: { isModalVisible: boolean, isBackgroundVisible: boolean }) {
-  return waitFor(() => expect(visibility).toStrictEqual({ isBackgroundVisible: false, isModalVisible: true }))
+function assertOnlyModalIsVisible(visibility: Record<string, boolean>) {
+  return waitFor(() => expect(visibility).toStrictEqual({ [backgroundContentId]: false, [testIds.modalContainer]: true }))
 }
 
-function assertOnlyBackgroundIsVisible(visibility: { isModalVisible: boolean, isBackgroundVisible: boolean }) {
-  return waitFor(() => expect(visibility).toStrictEqual({ isBackgroundVisible: true, isModalVisible: false }))
+function assertOnlyBackgroundIsVisible(visibility: Record<string, boolean>) {
+  return waitFor(() => expect(visibility).toStrictEqual({ [backgroundContentId]: true, [testIds.modalContainer]: false }))
 }
 
 function ConfirmationModal() {
@@ -157,6 +176,7 @@ function ConfirmationModal() {
 }
 
 const textCoveredByFullScreenModal = 'this shouldn\'t be visible when modal is opened'
+const fullScreenModalContent = 'should cover the whole screen'
 
 function FullScreenModal() {
   const Content = () => {
@@ -168,7 +188,6 @@ function FullScreenModal() {
           title: 'full screen',
           isFullScreen: true,
           isBlocking: true,
-          // onClose: () => { observer.disconnect() },
         },
       )
     }
@@ -200,11 +219,16 @@ function ImageModalExample() {
       <div>
         <button onClick={() => openNewModal(
           {
-            title: 'image',
-            contentComponentToRender: ImageModal({
-              src: 'https://b9ac758c-3c84-40c5-8991-14a9d06a8c83.mdnplay.dev/shared-assets/images/examples/grapefruit-slice.jpg',
-              altText: 'Grapefruit slice atop a pile of other slices',
-            }),
+            isBlocking: true,
+            getLayout: ({ onClose }) => (
+              <ImageModalLayout {...{
+                onClose,
+                title: 'image',
+                src: 'https://b9ac758c-3c84-40c5-8991-14a9d06a8c83.mdnplay.dev/shared-assets/images/examples/grapefruit-slice.jpg',
+                altText: 'Grapefruit slice atop a pile of other slices',
+              }}
+              />
+            ),
           },
         )}
         >
@@ -221,14 +245,12 @@ function ImageModalExample() {
   )
 }
 
-const fullScreenModalContent = 'should cover the whole screen'
-
 const moveFirstModalToBack = 'move first modal to back'
 const firstModalContent = 'should be in the background initially'
 const moveFirstModalToFront = 'move first modal to front'
 const secondModalContent = 'should be in the foreground initially'
 
-function CustomButtonsModal() {
+function BlockingModals() {
   const Content = () => {
     const { openNewModal, moveToFront, moveToBack } = useModal()
     return (
@@ -246,6 +268,57 @@ function CustomButtonsModal() {
               title: 'second modal',
               buttons: () => <button onClick={() => moveToFront(firstModalId)}>{moveFirstModalToFront}</button>,
               isBlocking: true,
+            },
+          )
+        }}
+        >
+          {openModalButtonText}
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <ModalProvider>
+      <Content />
+    </ModalProvider>
+  )
+}
+
+function NonBlockingModals() {
+  const Content = () => {
+    const firstModalId = useRef<string>(null)
+    const secondModalId = useRef<string>(null)
+    const { openNewModal, setZIndex } = useModal()
+    return (
+      <div>
+        <button onClick={() => {
+          firstModalId.current = openNewModal(
+            { children: <p>{firstModalContent}</p>,
+              title: 'first modal',
+              buttons: () => (
+                <button onClick={() => {
+                  setZIndex(secondModalId.current!, 1)
+                  setZIndex(firstModalId.current!, 0)
+                }}
+                >
+                  {moveFirstModalToBack}
+                </button>
+              ),
+            },
+          )
+          secondModalId.current = openNewModal(
+            { children: <p>{secondModalContent}</p>,
+              title: 'second modal',
+              buttons: () => (
+                <button onClick={() => {
+                  setZIndex(secondModalId.current!, 0)
+                  setZIndex(firstModalId.current!, 1)
+                }}
+                >
+                  {moveFirstModalToFront}
+                </button>
+              ),
             },
           )
         }}

@@ -20,7 +20,7 @@ export function ModalProvider(props: PropsWithChildren) {
   const openNewModal: ModalContextTypes['openNewModal'] = useCallback((modal) => {
     const id = modal.id || self.crypto.randomUUID()
     setModals(modals =>
-      [...modals, { ...modal, id }],
+      [...modals, { ...modal, id, zIndex: 0 }],
     )
     return id
   }, [])
@@ -44,8 +44,20 @@ export function ModalProvider(props: PropsWithChildren) {
     })
   }, [])
 
+  const setZIndex: ModalContextTypes['setZIndex'] = useCallback((idLookup, zIndex) => {
+    setModals((modals) => {
+      const modalToMove = modals.find(({ id }) => id === idLookup)
+      return modalToMove
+        ? [
+            ...modals.filter(({ id }) => id !== idLookup),
+            { ...modalToMove, zIndex },
+          ]
+        : modals
+    })
+  }, [])
+
   return (
-    <ModalContext.Provider value={{ openNewModal, close, moveToBack, moveToFront }}>
+    <ModalContext.Provider value={{ openNewModal, close, moveToBack, moveToFront, setZIndex }}>
       {props.children}
       {portalRoot.current && createPortal(
         modals
@@ -77,6 +89,6 @@ function onlyRenderTopIfModalType(modalProps: ModalState, modals: NewModal[], in
   return !modalProps.isBlocking || isLast(modals, index)
 }
 
-function isLast(modals: NewModal[], index: number): boolean | undefined {
+function isLast(modals: NewModal[], index: number) {
   return modals.length - 1 === index
 }
