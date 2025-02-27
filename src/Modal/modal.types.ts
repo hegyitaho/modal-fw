@@ -3,7 +3,7 @@ import type { JSX, JSXElementConstructor, PropsWithChildren } from 'react'
 export type ModalOptions = Partial<{
   title: string
   isFullScreen: boolean
-  /** if provided primary button appears */
+  /** if provided primary button appears. modalId is passed so it's more convenient to close */
   onConfirmed: (modalId: string) => void
   /** override default buttons in the footer */
   buttons: JSXElementConstructor<Pick<OpenedModalProps, 'onClose' | 'onConfirmed'>>
@@ -11,8 +11,8 @@ export type ModalOptions = Partial<{
   /** covers the whole screen with a backdrop preventing interaction with the background */
   isBlocking: boolean
   onClose: () => void
-  /** DefaultModal is used by default */
-  contentComponentToRender: JSXElementConstructor<OpenedModalProps>
+  /** instead of DefaultModal which is used by default */
+  contentComponentToRender: (props: Pick<OpenedModalProps, 'onClose'>) => JSX.Element
 }>
 
 export type NewModal = PropsWithChildren<ModalOptions>

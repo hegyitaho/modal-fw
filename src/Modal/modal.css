@@ -32,14 +32,13 @@
 .modal-fw[open].modal-fw--full-screen {
     width: var(--full-screen-max-size);
     height: var(--full-screen-max-size);
-    max-height: unset;
-    max-width: unset;
+    max-height: var(--full-screen-max-size);
+    max-width: var(--full-screen-max-size);
 }
 
 .modal-fw__content {
     max-height: calc(100vh - 200px);
     overflow: auto;
-    min-height: 100%;
 }
 
 .modal-fw__close-button {

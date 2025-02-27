@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useState } from 'react'
+import { createElement, PropsWithChildren, useCallback, useState } from 'react'
 import { ModalContext, ModalContextTypes } from './ModalContext'
 import { Modal } from './Modal'
 import { useCreatePortal } from './utils/useCreatePortal'
@@ -51,8 +51,8 @@ export function ModalProvider(props: PropsWithChildren) {
         modals
           .filter((modalProps, index) => onlyRenderTopIfModalType(modalProps, modals, index))
           .map(modalProps => (
-            <Modal
-              {...{
+            createElement(Modal,
+              {
                 ...modalProps,
                 onClose: () => {
                   modalProps.onClose?.()
@@ -63,11 +63,9 @@ export function ModalProvider(props: PropsWithChildren) {
                     modalProps.onConfirmed?.(modalProps.id)
                   },
                 }) as { onConfirmed: ModalProps['onConfirmed'] }, // not sure why TS won't understand this syntax
-              }}
-              key={modalProps.id}
-            >
-              { modalProps.children }
-            </Modal>
+                key: modalProps.id,
+              },
+              modalProps.children)
           )),
         portalRoot.current)}
     </ModalContext.Provider>

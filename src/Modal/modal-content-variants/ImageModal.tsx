@@ -1,14 +1,19 @@
 import { OpenedModalProps } from '../modal.types'
-import notFoundImage from './image-not-found.png'
 import { CloseButton } from './CloseButton'
 
-export function ImageModal({ src, altText }: { src: string, altText: string }) {
-  return ({ onClose, title }: OpenedModalProps) => (
+type ImageModalProps = {
+  src: string
+  altText: string
+  title: string
+} & Pick<OpenedModalProps, 'onClose'>
+
+export function ImageModal({ src, altText, onClose, title }: ImageModalProps) {
+  return (
     <>
       <h2>{title}</h2>
       <CloseButton onClose={onClose} />
       <object aria-label={altText} data={src}>
-        <img src={notFoundImage} alt="image not found" />
+        <img src="/image-not-found.png?url" alt="image not found" />
       </object>
     </>
   )

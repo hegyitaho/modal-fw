@@ -44,14 +44,13 @@ export function Modal({
       data-testid={testIds.modalContainer}
       onClose={onClose}
     >
-      {
-        createElement(contentComponentToRender ?? DefaultModal, {
+      {contentComponentToRender?.({ onClose })
+        ?? createElement(DefaultModal, {
           onClose,
           title,
           buttons: createElement((buttons ?? DefaultFooterButtons), buttonProps),
           onConfirmed },
-        children)
-      }
+        children)}
     </dialog>
   )
 }
