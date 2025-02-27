@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ModalProvider, useModal } from '../'
+import { ModalProvider, useModal } from '../src'
 import { closeModal, confirmModal, openModal, openModalButtonText, visibilityObserverByTestId } from './utils'
 import { useRef, useState } from 'react'
 import { expect, userEvent, waitFor, within } from '@storybook/test'
-import { testIds } from '../Modal/utils/testingIds'
-import { ImageModalLayout } from '../Modal/layout'
+import { testIds } from '../src/Modal/utils/testingIds'
+import { ImageModalLayout } from '../src/Modal/layout'
 
 const meta = {
   title: 'Complex modal',

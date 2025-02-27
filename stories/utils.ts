@@ -1,5 +1,5 @@
 import { expect, userEvent, within } from '@storybook/test'
-import { testIds } from '../Modal/utils/testingIds'
+import { testIds } from '../src/Modal/utils/testingIds'
 
 export const openModalButtonText = 'open modal'
 export const closeModalButtonText = 'close'

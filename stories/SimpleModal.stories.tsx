@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { userEvent, within, expect } from '@storybook/test'
-import { ModalProvider, useModal } from '../'
+import { ModalProvider, useModal } from '../src'
 import { assertContent, closeModal, closeModalButtonText, openModal, openModalButtonText } from './utils'
 
 const meta = {
