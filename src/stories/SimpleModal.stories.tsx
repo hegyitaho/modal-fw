@@ -72,7 +72,7 @@ function SimpleModal() {
   const Content = () => {
     const { openNewModal } = useModal()
     return (
-      <button onClick={() => openNewModal({ children: <div>content</div>, title: 'SingleContentSingleModal', isModal: true })}>
+      <button onClick={() => openNewModal({ children: <div>content</div>, title: 'SingleContentSingleModal', isBlocking: true })}>
         {openModalButtonText}
       </button>
     )

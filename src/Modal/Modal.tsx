@@ -12,7 +12,7 @@ export function Modal({
   title,
   onConfirmed,
   buttons,
-  isModal,
+  isBlocking,
   isFullScreen,
   contentComponentToRender,
 }: ModalProps) {
@@ -21,7 +21,7 @@ export function Modal({
   useEffect(() => {
     const current = dialogRef?.current
     if (current) {
-      if (isModal) {
+      if (isBlocking) {
         current.showModal()
       }
       else {

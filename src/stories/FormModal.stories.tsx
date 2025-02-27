@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { ModalProvider } from '../Modal/ModalProvider'
 import { useModal } from '../Modal/ModalContext'
-import { confirmModal, openModal, openModalButtonText } from './utils'
-import { Fragment, useActionState, useEffect, useRef } from 'react'
-import { expect, userEvent, within } from '@storybook/test'
-import { testIds } from '../Modal/utils/testingIds'
+import { openModal, openModalButtonText } from './utils'
+import { useActionState, useEffect, useRef } from 'react'
+import { expect, fireEvent, userEvent, within } from '@storybook/test'
 
 const meta = {
   title: 'Form handling modal',
@@ -21,21 +20,45 @@ export const Modal: Story = {
   render: FormModal,
 }
 
+interface Product {
+  name: string
+  price: number
+}
+
+const formId = 'add-new-product'
+
 export const ConfirmationModalCloses: Story = {
   name: 'confirmation modal closes after confirmed',
   render: FormModal,
   play: async ({ canvasElement }) => {
     const root = canvasElement.parentElement as HTMLElement
+    const canvas = within(root)
+    const newProduct: Product = { name: 'some new product', price: 12345 }
+
     await openModal(root)
-    fireEvent.change()
+
+    await fillProductDetails(root, newProduct)
+
+    await fireEvent.submit(canvas.getByTestId(formId))
+
+    await assertCreatedProductDetailsAreShownInANewModal(root, newProduct)
   },
 }
 
-interface Product {
-  name: string
-  price: number
+async function assertCreatedProductDetailsAreShownInANewModal(root: HTMLElement, newProduct: Product) {
+  const canvas = within(root)
+  await expect(canvas.getByLabelText('name', { exact: false })).toHaveValue(newProduct.name)
+  // TODO make Intl.NumberFormat/locale consistent in ci
+  // await expect(canvas.getByLabelText('price', { exact: false })).toHaveValue(newProduct.price)
+  await expect(canvas.getByLabelText('price', { exact: false })).toHaveValue(12345)
+  await userEvent.click(canvas.getByLabelText('close-modal'))
 }
-const formId = 'add-new-product'
+
+async function fillProductDetails(root: HTMLElement, newProduct: Product) {
+  const canvas = within(root)
+  await fireEvent.change(canvas.getByLabelText('name', { exact: false }), { target: { value: newProduct.name } })
+  await fireEvent.change(canvas.getByLabelText('price', { exact: false }), { target: { value: newProduct.price } })
+}
 
 function FormModal() {
   const Content = () => {
@@ -58,6 +81,7 @@ function FormModal() {
                 <NewProduct {...{ onNewProduct, formId }} />
               ),
               buttons: () => <button form={formId} type="submit">Save</button>,
+              isBlocking: true,
             },
           )
           formModalId.current = id
@@ -76,7 +100,7 @@ function FormModal() {
   )
 }
 
-const maxCharacterLength = 20
+const maxCharacterLength = 25
 const minNameCharacters = 3
 
 function NewProduct({ onNewProduct, formId }: { formId: string, onNewProduct: (product: Product) => void }) {
@@ -93,43 +117,36 @@ function NewProduct({ onNewProduct, formId }: { formId: string, onNewProduct: (p
   }, [])
 
   const customMessage = (message = '') => (e: React.FormEvent<HTMLInputElement>) => e.currentTarget.setCustomValidity(message)
+
   return (
-    <form id={formId} action={formAction}>
+    <form data-testid={formId} id={formId} action={formAction}>
       <h2>add new product</h2>
-      <p>
-        <label>
-          name*&nbsp;
-          <br />
-          <input
-            style={{ width: '100%' }}
-            ref={input}
-            autoComplete="off"
-            onInput={customMessage()}
-            onInvalid={customMessage(`Please start the name with at least ${minNameCharacters} letters`)}
-            required
-            maxLength={18}
-            pattern={`\\s*[^\\W\\d]{${minNameCharacters},}.*\\s*`}
-            name="name"
-            type="text"
-          />
-        </label>
-      </p>
-      <p>
-        <label>
-          price ($) *&nbsp;
-          <br />
-          <input
-            style={{ width: '100%' }}
-            autoComplete="off"
-            required
-            name="price"
-            type="number"
-            min={0}
-            step={0.01}
-            max={1e6}
-          />
-        </label>
-      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'min-content 1fr', gap: '1rem' }}>
+        <label htmlFor="product-name">name*</label>
+        <input
+          id="product-name"
+          ref={input}
+          autoComplete="off"
+          onInput={customMessage()}
+          onInvalid={customMessage(`Please start the name with at least ${minNameCharacters} letters, max ${maxCharacterLength} characters`)}
+          required
+          maxLength={maxCharacterLength}
+          pattern={`\\s*[^\\W\\d]{${minNameCharacters},}.*\\s*`}
+          name="name"
+          type="text"
+        />
+        <label htmlFor="product-price" style={{ whiteSpace: 'nowrap' }}>price ($)*</label>
+        <input
+          id="product-price"
+          autoComplete="off"
+          required
+          name="price"
+          type="number"
+          min={0}
+          step={0.01}
+          max={1e6}
+        />
+      </div>
     </form>
   )
 }

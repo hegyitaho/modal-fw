@@ -8,7 +8,8 @@ export type ModalOptions = Partial<{
   /** override default buttons in the footer */
   buttons: JSXElementConstructor<Pick<OpenedModalProps, 'onClose' | 'onConfirmed'>>
   id: string
-  isModal: boolean
+  /** covers the whole screen with a backdrop preventing interaction with the background */
+  isBlocking: boolean
   onClose: () => void
   /** DefaultModal is used by default */
   contentComponentToRender: JSXElementConstructor<OpenedModalProps>
@@ -20,4 +21,4 @@ export type ModalProps = Omit<NewModal, 'onConfirmed'> & {
   onConfirmed?: () => void
 }
 
-export type OpenedModalProps = Omit<ModalProps, 'isOpen' | 'isFullScreen' | 'isModal' | 'contentComponentToRender' | 'buttons'> & { buttons: JSX.Element }
+export type OpenedModalProps = Omit<ModalProps, 'isOpen' | 'isFullScreen' | 'isBlocking' | 'contentComponentToRender' | 'buttons'> & { buttons: JSX.Element }

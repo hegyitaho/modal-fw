@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useEffect, useId, useState } from 'react'
+import { PropsWithChildren, useCallback, useState } from 'react'
 import { ModalContext, ModalContextTypes } from './ModalContext'
 import { Modal } from './Modal'
 import { useCreatePortal } from './utils/useCreatePortal'
@@ -76,7 +76,7 @@ export function ModalProvider(props: PropsWithChildren) {
 
 /** `<dialog>` behaves buggy if multiple modal types are opened and moved around */
 function onlyRenderTopIfModalType(modalProps: ModalState, modals: NewModal[], index: number) {
-  return !modalProps.isModal || isLast(modals, index)
+  return !modalProps.isBlocking || isLast(modals, index)
 }
 
 function isLast(modals: NewModal[], index: number): boolean | undefined {

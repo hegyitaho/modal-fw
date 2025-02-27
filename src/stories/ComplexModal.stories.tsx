@@ -168,7 +168,7 @@ function FullScreenModal() {
           children: <p>{fullScreenModalContent}</p>,
           title: 'full screen',
           isFullScreen: true,
-          isModal: true,
+          isBlocking: true,
           // onClose: () => { observer.disconnect() },
         },
       )
@@ -239,14 +239,14 @@ function CustomButtonsModal() {
             { children: <p>{firstModalContent}</p>,
               title: 'first modal',
               buttons: () => <button onClick={() => moveToBack(firstModalId)}>{moveFirstModalToBack}</button>,
-              isModal: true,
+              isBlocking: true,
             },
           )
           openNewModal(
             { children: <p>{secondModalContent}</p>,
               title: 'second modal',
               buttons: () => <button onClick={() => moveToFront(firstModalId)}>{moveFirstModalToFront}</button>,
-              isModal: true,
+              isBlocking: true,
             },
           )
         }}

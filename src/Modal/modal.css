@@ -2,6 +2,8 @@
     --regular-max-size: calc(100% - 100px);
     --full-screen-max-size: calc(100% - 3rem);
     --min-size: 300px;
+    --modal-padding: 1rem;
+    --min-content-width: calc(100% - var(--modal-padding))
   }
 
 .modal-fw[open] {
@@ -18,7 +20,7 @@
     border-radius: 1rem;
     min-width: var(--min-size);
     min-height: var(--min-size);
-    padding: 1rem;
+    padding: var(--modal-padding);
     
 }
 
@@ -35,10 +37,8 @@
 }
 
 .modal-fw__content {
-    margin: 1rem;
     max-height: calc(100vh - 200px);
     overflow: auto;
-    min-width: 100%;
     min-height: 100%;
 }
 
